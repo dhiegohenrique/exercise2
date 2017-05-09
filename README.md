@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dhiegohenrique/exercise3-node.svg?branch=master)](https://travis-ci.org/dhiegohenrique/exercise3-node)
+[![Build Status](https://travis-ci.org/dhiegohenrique/exercise2.svg?branch=master)](https://travis-ci.org/dhiegohenrique/exercise2)
 
 Requerimentos:
 - é necessário ter o Node.js instalado
