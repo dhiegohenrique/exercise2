@@ -1,9 +1,12 @@
 var fs = require("fs");
 var winston = require("winston");
 var timestamp = require("time-stamp");
+var config = require("./config/config")();
 
-if (!fs.existsSync("logs")) {
-  fs.mkdirSync("logs");
+if (config.debug) {
+  if (!fs.existsSync("logs")) {
+    fs.mkdirSync("logs");
+  }
 }
 
 module.exports = new winston.Logger({

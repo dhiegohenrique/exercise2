@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 var logger = require("../logger");
+var config = require("../config/config")();
 
 module.exports = function(uri) {
 	mongoose.Promise = global.Promise;
@@ -24,7 +25,9 @@ module.exports = function(uri) {
 	  });
 	});
 
-	mongoose.set('debug', function(coll, method, query, doc, options) {
-		logger.info("collection: " + coll.toUpperCase() + ", method: " + method.toUpperCase() + ", query: " + JSON.stringify(query));
-});
+	if (config.debug) {
+		mongoose.set('debug', function(coll, method, query, doc, options) {
+			logger.info("collection: " + coll.toUpperCase() + ", method: " + method.toUpperCase() + ", query: " + JSON.stringify(query));
+		});
+	}
 }
