@@ -12,3 +12,10 @@ before_script:
 - npm test
 - node server &
 - sleep 10
+deploy:
+  provider: heroku
+  api_key:
+    secure: BIGcYh01FJfnBkiL/4NmdE4mZvkFMi1i0AEg2luxtRPJNs1IwD+zNfRukQLcHXZ4uWHwsyf6SdVtbeK0xoqGJA4xTpR6e+WIWM0HNXr9cLDR9q1ceS/L3RWf/zJ0A6ms5zJw/xu3Ky5luR7bv6kZV6MiY05ciWxb7DwBjyPy5W8NvAqGKSRJHjBc91DFxtqbmqG+HMqNap/p9NFta6MNdxyxG9QfB1EEFDIY+y3MReQYAlmCesUkOpClxb4yRGWhQAvSjpSOPKfms2v0UeBrA/2yX7PsZZik/YwpP2NOBhcTq6d9eK/EC7RxtyUAa+Fa1QBbJS9Vbz9N6vH+GrhQoi2kikxG/fMl4Q5Xk8tkaewyANKWIluwvz00iVZbl9JVje1gXq/oBqAKFO8bXi94XNquUdz4gsyKiXL4dRXVfUEokpXjbuAamz3eyalFpxEviRwcs4CMWvRf9Gm0ETE7xFXE5r8eTOlYlccAueSFIzB7qhC11qDW4GGFUayfWRvx3l4TEkeaK4rfYKRUgjt9/YL10xJnQLBiF7khWBKhHB4SSibKokkosje9g+6R8SvumHgTCkUmdMzDzh60HL9zNv5GcMRkAQHSZiUW4+52ZHpme/1cB3hH1sFZD4KVr54Ih8RHoTN+Zhx7FFfefll0y/fn9Yzl/hsa8EQUx8kpchE=
+  app: bravi-exercise2
+  on:
+    repo: dhiegohenrique/exercise2
