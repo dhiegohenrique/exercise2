@@ -50,7 +50,7 @@ describe("Routes : contacts", function() {
             contactId = result.contact.id;
             contactMaria._id = contactId;
 
-            // done();
+            done();
         };
 
         baseTest.setUp({peopleData : peopleMaria, contactData : contactMaria}, callback);
