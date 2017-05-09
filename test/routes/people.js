@@ -1,6 +1,7 @@
 var baseTest = require("../baseTest")();
 var mongoose = require('mongoose');
 var tokenTest = require("../tokenTest")();
+var Promise = require('bluebird');
 
 var peopleMaria = {
   name: "Maria",
@@ -67,7 +68,7 @@ describe("Routes : people", function() {
             this.timeout(5000);
             var people = [];
 
-            for (indexPeople = 0; indexPeople < 6; indexPeople++) {
+            for (indexPeople = 0; indexPeople < 5; indexPeople++) {
                 var newPeople = {
                     name: "nome" + indexPeople,
                     email: "email" + indexPeople + "@hotmail.com",
@@ -82,10 +83,8 @@ describe("Routes : people", function() {
                     status : 200
                 };
 
-                for (indexPage = 0; indexPage < 4; indexPage++) {
-                    options.url = "/people?index=" + indexPage + "&size=2";
-                    var index = 0;
-
+                var promisePage0 = new Promise(function(resolve, reject) {
+                    options.url = "/people?index=0&size=2";
                     baseTest.requestGet(options, (res, error) => {
                         if (error) {
                             done(error);
@@ -93,24 +92,54 @@ describe("Routes : people", function() {
                         }
 
                         var people = JSON.parse(res.text);
+                        resolve(people.length);
+                    });
+                });
 
-                        if (index < 3) {
-                            expect(people).to.be.lengthOf(2);
-                        } else {
-                            expect(people).to.be.lengthOf(1);
+                var promisePage1 = new Promise(function(resolve, reject) {
+                    options.url = "/people?index=1&size=2";
+                    baseTest.requestGet(options, (res, error) => {
+                        if (error) {
                             done(error);
+                            return;
                         }
 
-                        index++;
+                        var people = JSON.parse(res.text);
+                        resolve(people.length);
                     });
-                }
+                });
+
+                var promisePage2 = new Promise(function(resolve, reject) {
+                    options.url = "/people?index=2&size=2";
+                    baseTest.requestGet(options, (res, error) => {
+                        if (error) {
+                            done(error);
+                            return;
+                        }
+
+                        var people = JSON.parse(res.text);
+                        resolve(people.length);
+                    });
+                });
+
+                Promise.all([promisePage0, promisePage1, promisePage2]).then(function(results) {
+                    expect(results[0]).to.be.eql(2);
+                    expect(results[1]).to.be.eql(2);
+                    expect(results[2]).to.be.eql(1);
+                    done();
+                });
             };
 
-            People.create(people)
-                .then(function(result) {
-                    checkPagination();
-                })
-                .catch(function(error){
+            People.remove({}).exec()
+                .then(function() {
+                    People.create(people)
+                        .then(function(result) {
+                            checkPagination();
+                        })
+                        .catch(function(error){
+                            done(error);
+                        });
+                }, function(error) {
                     done(error);
                 });
         });

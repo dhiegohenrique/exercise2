@@ -2,6 +2,7 @@ var baseTest = require("../baseTest")();
 var mongoose = require('mongoose');
 var tokenTest = require("../tokenTest")();
 var jsonEqual = require('node-json-equal');
+var Promise = require('bluebird');
 
 var peopleMaria = {
   name: "Maria",
@@ -79,11 +80,11 @@ describe("Routes : contacts", function() {
             baseTest.requestGet(options, callback);
         });
 
-        it("Checks if pagination is returning 2 results on the first 3 pages and 1 result on last.", function(done) {
+        it("Checks if pagination is returning 2 results on the first 2 pages and 1 result on last.", function(done) {
             this.timeout(5000);
-            var contacts = [];
 
-            for (indexContact = 0; indexContact < 6; indexContact++) {
+            var contacts = [];
+            for (indexContact = 0; indexContact < 5; indexContact++) {
                 var contact = {
                     name: "Contact" + indexContact,
                     personId : id
@@ -98,10 +99,8 @@ describe("Routes : contacts", function() {
                     "token" : token
                 };
 
-                for (indexPage = 0; indexPage < 4; indexPage++) {
-                    options.url = "/contacts?index=" + indexPage + "&size=2";
-                    var index = 0;
-
+                var promisePage0 = new Promise(function(resolve, reject) {
+                    options.url = "/contacts?index=0&size=2";
                     baseTest.requestGet(options, (res, error) => {
                         if (error) {
                             done(error);
@@ -109,24 +108,54 @@ describe("Routes : contacts", function() {
                         }
 
                         var contacts = JSON.parse(res.text);
+                        resolve(contacts.length);
+                    });
+                });
 
-                        if (index < 3) {
-                            expect(contacts).to.be.lengthOf(2);
-                        } else {
-                            expect(contacts).to.be.lengthOf(1);
+                var promisePage1 = new Promise(function(resolve, reject) {
+                    options.url = "/contacts?index=1&size=2";
+                    baseTest.requestGet(options, (res, error) => {
+                        if (error) {
                             done(error);
+                            return;
                         }
 
-                        index++;
+                        var contacts = JSON.parse(res.text);
+                        resolve(contacts.length);
                     });
-                }
+                });
+
+                var promisePage2 = new Promise(function(resolve, reject) {
+                    options.url = "/contacts?index=2&size=2";
+                    baseTest.requestGet(options, (res, error) => {
+                        if (error) {
+                            done(error);
+                            return;
+                        }
+
+                        var contacts = JSON.parse(res.text);
+                        resolve(contacts.length);
+                    });
+                });
+
+                Promise.all([promisePage0, promisePage1, promisePage2]).then(function(results) {
+                    expect(results[0]).to.be.eql(2);
+                    expect(results[1]).to.be.eql(2);
+                    expect(results[2]).to.be.eql(1);
+                    done();
+                });
             };
 
-            app.models.Contact.create(contacts)
-                .then(function(result) {
-                    checkPagination();
-                })
-                .catch(function(error){
+            app.models.Contact.remove({}).exec()
+                .then(function() {
+                    app.models.Contact.create(contacts)
+                        .then(function(result) {
+                            checkPagination();
+                        })
+                        .catch(function(error){
+                            done(error);
+                        });
+                }, function(error) {
                     done(error);
                 });
         });

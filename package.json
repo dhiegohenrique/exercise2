@@ -7,15 +7,15 @@
     "start": "npm run apidoc && node server",
     "test": "set NODE_ENV=test && mocha test/**/*.js",
     "clusters": "node clusters",
-    "apidoc" : "apidoc -i app/routes/ -o public/apidoc"
+    "apidoc": "apidoc -i app/routes/ -o public/apidoc"
   },
   "author": "Dhiego",
-  "apidoc" : {
-    "name" : "Documentação - Rest API Exercise2",
+  "apidoc": {
+    "name": "Documentação - Rest API Exercise2",
     "template": {
-        "forceLanguage": "en",
-        "withCompare" : false,
-        "withGenerator" : false
+      "forceLanguage": "en",
+      "withCompare": false,
+      "withGenerator": false
     }
   },
   "license": "ISC",
@@ -45,6 +45,7 @@
     "winston": "^2.3.1"
   },
   "devDependencies": {
+    "bluebird": "^3.5.0",
     "chai": "^3.5.0",
     "chai-string": "^1.3.0",
     "mocha": "^3.3.0",
