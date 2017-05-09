@@ -3,6 +3,8 @@ node_js:
 - 7.4.0
 notifications:
   email: false
+services:
+- mongodb
 env:
   global:
   - NODE_ENV: test
