@@ -10,7 +10,7 @@ env:
   - NODE_ENV: test
 before_script:
 - npm test
-- npm run clusters &
+- node server &
 - sleep 10
 deploy:
   provider: heroku

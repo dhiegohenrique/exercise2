@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "npm run apidoc && node server",
+    "start": "npm run apidoc && node clusters",
     "test": "set NODE_ENV=test && mocha test/**/*.js",
     "clusters": "node clusters",
     "apidoc": "apidoc -i app/routes/ -o public/apidoc"
