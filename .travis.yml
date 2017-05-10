@@ -8,9 +8,6 @@ services:
 env:
   global:
   - NODE_ENV: test
-before_script:
-- npm test &
-- sleep 10
 deploy:
   provider: heroku
   api_key:
