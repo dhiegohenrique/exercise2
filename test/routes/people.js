@@ -64,7 +64,7 @@ describe("Routes : people", function() {
             baseTest.requestGet(options, callback);
         });
 
-        it("Checks if pagination is returning 2 results on the first 3 pages and 1 result on last.", function(done) {
+        it("Checks if pagination is returning 2 results on the first 2 pages and 1 result on last.", function(done) {
             this.timeout(5000);
             var people = [];
 
