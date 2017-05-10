@@ -3,6 +3,8 @@ var winston = require("winston");
 var timestamp = require("time-stamp");
 var config = require("./config/config")();
 
+console.log("O valor de config.debug é: " + config.debug);
+
 if (config.debug) {
   if (!fs.existsSync("logs")) {
     fs.mkdirSync("logs");
