@@ -9,8 +9,7 @@ env:
   global:
   - NODE_ENV: test
 before_script:
-- npm test
-- node server &
+- npm test &
 - sleep 10
 deploy:
   provider: heroku
